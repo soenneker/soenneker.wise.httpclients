@@ -1,20 +1,19 @@
 using Soenneker.Wise.HttpClients.Abstract;
-using Soenneker.Tests.FixturedUnit;
-using Xunit;
+using Soenneker.Tests.HostedUnit;
 
 namespace Soenneker.Wise.HttpClients.Tests;
 
-[Collection("Collection")]
-public sealed class WiseOpenApiHttpClientTests : FixturedUnitTest
+[ClassDataSource<Host>(Shared = SharedType.PerTestSession)]
+public sealed class WiseOpenApiHttpClientTests : HostedUnitTest
 {
     private readonly IWiseOpenApiHttpClient _httpclient;
 
-    public WiseOpenApiHttpClientTests(Fixture fixture, ITestOutputHelper output) : base(fixture, output)
+    public WiseOpenApiHttpClientTests(Host host) : base(host)
     {
         _httpclient = Resolve<IWiseOpenApiHttpClient>(true);
     }
 
-    [Fact]
+    [Test]
     public void Default()
     {
 
