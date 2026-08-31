@@ -6,12 +6,12 @@ using Soenneker.Utils.HttpClientCache.Registrar;
 namespace Soenneker.Wise.HttpClients.Registrars;
 
 /// <summary>
-/// Registers the OpenAPI HttpClient wrapper for dependency injection.
+/// Registers the Wise API HTTP client provider.
 /// </summary>
 public static class WiseOpenApiHttpClientRegistrar
 {
     /// <summary>
-    /// Adds <see cref="WiseOpenApiHttpClient"/> as a singleton service. <para/>
+    /// Adds the Wise HTTP client provider as a singleton service.
     /// </summary>
     public static IServiceCollection AddWiseOpenApiHttpClientAsSingleton(this IServiceCollection services)
     {
@@ -22,7 +22,7 @@ public static class WiseOpenApiHttpClientRegistrar
     }
 
     /// <summary>
-    /// Adds <see cref="WiseOpenApiHttpClient"/> as a scoped service. <para/>
+    /// Adds the Wise HTTP client provider as a scoped service.
     /// </summary>
     public static IServiceCollection AddWiseOpenApiHttpClientAsScoped(this IServiceCollection services)
     {

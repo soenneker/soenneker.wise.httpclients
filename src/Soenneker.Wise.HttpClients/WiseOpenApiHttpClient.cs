@@ -16,8 +16,9 @@ public sealed class WiseOpenApiHttpClient : IWiseOpenApiHttpClient
 {
     private readonly IHttpClientCache _httpClientCache;
     private readonly IConfiguration _config;
+    private readonly string _cacheKey = $"{nameof(WiseOpenApiHttpClient)}-{Guid.NewGuid():N}";
 
-    private const string _prodBaseUrl = "https://api.wise.com";
+    private const string _prodBaseUrl = "https://api.wise.com/";
 
     public WiseOpenApiHttpClient(IHttpClientCache httpClientCache, IConfiguration config)
     {
@@ -27,12 +28,12 @@ public sealed class WiseOpenApiHttpClient : IWiseOpenApiHttpClient
 
     public ValueTask<HttpClient> Get(CancellationToken cancellationToken = default)
     {
-        return _httpClientCache.Get(nameof(WiseOpenApiHttpClient), (config: _config, baseUrl: _config["Wise:ClientBaseUrl"] ?? _prodBaseUrl), static state =>
+        return _httpClientCache.Get(_cacheKey, (config: _config, baseUrl: _config["Wise:ClientBaseUrl"] ?? _prodBaseUrl), static state =>
         {
-            var apiKey = state.config.GetValueStrict<string>("Wise:ApiKey");
+            string accessToken = state.config["Wise:AccessToken"] ?? state.config.GetValueStrict<string>("Wise:ApiKey");
             string authHeaderName = state.config["Wise:AuthHeaderName"] ?? "Authorization";
             string authHeaderValueTemplate = state.config["Wise:AuthHeaderValueTemplate"] ?? "Bearer {token}";
-            string authHeaderValue = authHeaderValueTemplate.Replace("{token}", apiKey, StringComparison.Ordinal);
+            string authHeaderValue = authHeaderValueTemplate.Replace("{token}", accessToken, StringComparison.Ordinal);
 
             return new HttpClientOptions
             {
@@ -45,20 +46,13 @@ public sealed class WiseOpenApiHttpClient : IWiseOpenApiHttpClient
         }, cancellationToken);
     }
 
-    /// <summary>
-    /// Releases resources used by the current instance.
-    /// </summary>
     public void Dispose()
     {
-        _httpClientCache.RemoveSync(nameof(WiseOpenApiHttpClient));
+        _httpClientCache.RemoveSync(_cacheKey);
     }
 
-    /// <summary>
-    /// Asynchronously releases resources used by the current instance.
-    /// </summary>
-    /// <returns>A task that represents the asynchronous operation.</returns>
     public ValueTask DisposeAsync()
     {
-        return _httpClientCache.Remove(nameof(WiseOpenApiHttpClient));
+        return _httpClientCache.Remove(_cacheKey);
     }
 }
