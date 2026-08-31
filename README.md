@@ -19,12 +19,12 @@ dotnet add package Soenneker.Wise.HttpClients
 {
   "Wise": {
     "AccessToken": "your-access-token",
-    "ClientBaseUrl": "https://api.wise.com/"
+    "ClientBaseUrl": "https://api.wise.com/2026Q3/"
   }
 }
 ```
 
-For sandbox calls, use `https://api.wise-sandbox.com/`. The package sends the token you provide; it does not obtain or refresh OAuth tokens. `Wise:ApiKey` remains supported as a legacy alias for `AccessToken`.
+For sandbox calls, use `https://api.wise-sandbox.com/2026Q3/`. The package sends the token you provide; it does not obtain or refresh OAuth tokens. `Wise:ApiKey` remains supported as a legacy alias for `AccessToken`.
 
 ## Registration and usage
 
@@ -46,7 +46,7 @@ public sealed class WiseProfileService
     public async Task<string> ListProfiles(CancellationToken cancellationToken)
     {
         HttpClient client = await _clientProvider.Get(cancellationToken);
-        return await client.GetStringAsync("v2/profiles", cancellationToken);
+        return await client.GetStringAsync("profiles", cancellationToken);
     }
 }
 ```

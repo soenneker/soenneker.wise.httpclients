@@ -18,7 +18,7 @@ public sealed class WiseOpenApiHttpClient : IWiseOpenApiHttpClient
     private readonly IConfiguration _config;
     private readonly string _cacheKey = $"{nameof(WiseOpenApiHttpClient)}-{Guid.NewGuid():N}";
 
-    private const string _prodBaseUrl = "https://api.wise.com/";
+    private const string _prodBaseUrl = "https://api.wise.com/2026Q3/";
 
     public WiseOpenApiHttpClient(IHttpClientCache httpClientCache, IConfiguration config)
     {
