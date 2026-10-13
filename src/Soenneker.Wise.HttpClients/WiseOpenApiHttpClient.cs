@@ -30,7 +30,7 @@ public sealed class WiseOpenApiHttpClient : IWiseOpenApiHttpClient
     {
         return _httpClientCache.Get(_cacheKey, (config: _config, baseUrl: _config["Wise:ClientBaseUrl"] ?? _prodBaseUrl), static state =>
         {
-            string accessToken = state.config["Wise:AccessToken"] ?? state.config.GetValueStrict<string>("Wise:ApiKey");
+            string accessToken = state.config["Wise:AccessToken"] ?? state.config.GetStringStrict("Wise:ApiKey");
             string authHeaderName = state.config["Wise:AuthHeaderName"] ?? "Authorization";
             string authHeaderValueTemplate = state.config["Wise:AuthHeaderValueTemplate"] ?? "Bearer {token}";
             string authHeaderValue = authHeaderValueTemplate.Replace("{token}", accessToken, StringComparison.Ordinal);
